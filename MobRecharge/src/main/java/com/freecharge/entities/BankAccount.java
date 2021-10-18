@@ -9,7 +9,8 @@ import javax.persistence.Id;
 public class BankAccount {
 	
 	@Id
-	@GeneratedtedValue(strategy=GenerationType.Identity)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	Integer bid;
 	
 	String bankName;
