@@ -17,14 +17,14 @@ public class AdminController {
 	@Autowired
 	AdminService adminService;
 	
-	@PostMapping("/offer")
-	public Integer addOffer(@RequestBody Offer offer) {
-		return adminService.addOffer(offer);
+	@PostMapping("/plan/{pid}/offer")
+	public Integer addOffer(@RequestBody Offer offer, @PathVariable Integer pid) {
+		return adminService.addOffer(offer, pid);
 	}
 	
-	@PostMapping("offer/{oid}/plan")
-	public Integer addPlan(@RequestBody Plan plan, @PathVariable Integer oid){
-        return adminService.addPlan(plan, oid);
+	@PostMapping("/plan")
+	public Integer addPlan(@RequestBody Plan plan){
+        return adminService.addPlan(plan);
 	}
 
 }

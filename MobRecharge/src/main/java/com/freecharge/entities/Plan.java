@@ -6,14 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="plans")
@@ -30,11 +23,6 @@ public class Plan {
 	private Date createdDate;
 	private Date updatedDate;
 	
-	@ManyToOne
-	@JoinColumn(name="offer_oid", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Offer offer;
 
 	public Integer getId() {
 		return id;
@@ -99,17 +87,5 @@ public class Plan {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-
-	public Offer getOffer() {
-		return offer;
-	}
-
-	public void setOffer(Offer offer) {
-		this.offer = offer;
-	}
-	
-	
-	
-	
 
 }

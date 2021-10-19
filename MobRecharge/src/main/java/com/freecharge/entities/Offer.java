@@ -4,6 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Offer {
@@ -16,6 +23,19 @@ public class Offer {
 	private double discountPercentage;
 	private double minValue;
 	private double ceilingValue;
+	
+	@ManyToOne
+	@JoinColumn(name="plan_pid", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Plan plan;
+	
+	public Plan getPlan() {
+		return plan;
+	}
+	public void setPlan(Plan plan) {
+		this.plan = plan;
+	}
 	public Integer getId() {
 		return id;
 	}

@@ -16,15 +16,13 @@ public class AdminService {
 	@Autowired
 	PlanRepo planRepo;
 	
-	public Integer addOffer(Offer offer) {
+	public Integer addOffer(Offer offer, Integer pid) {
+		Plan plan = planRepo.findById(pid).orElse(null);
+		offer.setPlan(plan);
 		offerRepo.save(offer);
 		return offer.getId();
 	}
-	public Integer addPlan(Plan plan, Integer oid) {
-		Offer offer = offerRepo.findById(oid)
-				.orElse(null);
-		plan.setOffer(offer);
-		
+	public Integer addPlan(Plan plan) {
 		planRepo.save(plan);
 		return plan.getId();
 	}
