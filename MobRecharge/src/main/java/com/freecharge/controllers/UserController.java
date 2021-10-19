@@ -25,7 +25,7 @@ public class UserController {
 	UserService userService;
 	
 	
-	@GetMapping("getAll")
+	@GetMapping("/")
 	List<User> getAllUsers() {
 		System.out.println("called");
 		return userService.getAllUsers();

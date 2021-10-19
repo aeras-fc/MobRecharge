@@ -17,7 +17,7 @@ public class AdminController {
 	@Autowired
 	AdminService adminService;
 	
-	@PostMapping("/addOffer")
+	@PostMapping("/offer")
 	public Integer addOffer(@RequestBody Offer offer) {
 		return adminService.addOffer(offer);
 	}

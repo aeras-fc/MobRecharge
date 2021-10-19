@@ -3,7 +3,6 @@ package com.freecharge.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,13 +20,13 @@ public class BankAccountController {
 	BankAccountService bankAccountService;
 	
 	
-	@GetMapping(value="")
-	List<BankAccount> getUserBankAccountDetails(@PathVariable Integer uid) {
+	@GetMapping(value="/")
+	List<BankAccount> getBankAccount(@PathVariable Integer uid) {
 		return bankAccountService.getUserBankAccounts(uid);
 	}
 	
-	@PostMapping(value="")
-	String addBankAccountOfUser(@RequestBody BankAccount bankAccount,@PathVariable Integer uid) {
+	@PostMapping(value="/")
+	String addBankAccount(@RequestBody BankAccount bankAccount, @PathVariable Integer uid) {
 		bankAccountService.addBankAccount(bankAccount, uid);
 		System.out.println("Post Bank Account added!");
 		return "Bank Added";

@@ -22,7 +22,7 @@ public class OfferController {
 	@Autowired 
 	OfferService offerService;
 	
-	@GetMapping("")
+	@GetMapping("/")
 	List<Offer> getAllOffers() {
 		System.out.println("called");
 		return offerService.getAll();
