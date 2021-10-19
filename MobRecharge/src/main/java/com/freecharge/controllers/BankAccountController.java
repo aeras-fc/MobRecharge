@@ -21,16 +21,20 @@ public class BankAccountController {
 	BankAccountService bankAccountService;
 	
 	
-	@GetMapping(value="/")
+	@GetMapping(value="")
 	List<BankAccount> getUserBankAccountDetails(@PathVariable Integer uid) {
-		return bankAccountService.getUserBankAccountDetails(uid);
+		return bankAccountService.getUserBankAccounts(uid);
 	}
-	@PostMapping(value="/")
-	BankAccount addBankAccountOfUser(@RequestBody BankAccount bankAccount,@PathVariable Integer uid) {
-		return bankAccountService.addBankAccountOfUser(bankAccount,uid);
+	
+	@PostMapping(value="")
+	String addBankAccountOfUser(@RequestBody BankAccount bankAccount,@PathVariable Integer uid) {
+		bankAccountService.addBankAccount(bankAccount, uid);
+		System.out.println("Post Bank Account added!");
+		return "Bank Added";
 	}
-	@DeleteMapping(value="/{bid}")
-	String deleteBankAccountOfUserByBid(@PathVariable Integer uid,@PathVariable Integer bid) {
-		return bankAccountService.deleteBankAccountOfUserByBid(uid,bid);
-	}
+	
+//	@DeleteMapping(value="/{bid}")
+//	String deleteBankAccountOfUserByBid(@PathVariable Integer uid,@PathVariable Integer bid) {
+//		return bankAccountService.deleteBankAccountOfUserByBid(uid,bid);
+//	}
 }

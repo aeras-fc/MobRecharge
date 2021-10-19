@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.freecharge.entities.BankAccount;
+import com.freecharge.entities.Plan;
 import com.freecharge.entities.Transaction;
 import com.freecharge.entities.User;
-import com.freecharge.services.BankAccountService;
 import com.freecharge.services.UserService;
 
 @RestController
@@ -24,26 +23,38 @@ import com.freecharge.services.UserService;
 public class UserController {
 	@Autowired
 	UserService userService;
-	@GetMapping("/home")
+	
+	
+	@GetMapping("getAll")
 	List<User> getAllUsers() {
 		System.out.println("called");
 		return userService.getAllUsers();
 	}
-	@PostMapping(value="")
+	
+	@PostMapping(value="/signup")
 	Integer createNewUser(@RequestBody User user) {
 		return userService.createNewUser(user);
 	}
+	
 	@GetMapping(value="/{uid}")
 	Optional<User> getUserById(@PathVariable Integer uid) {
 		return userService.getUserById(uid);
 	}
+	
 	@PutMapping(value="/{uid}")
 	Optional<User> updateUserById(@RequestBody User user,@PathVariable Integer uid) {
 		return userService.updateUserById(user,uid);
 	}
+	
 	@DeleteMapping(value="/{uid}")
 	String deleteUserById(@PathVariable Integer uid) {
 		return userService.deleteUserById(uid);
+	}
+	
+	@GetMapping(value="/plans")
+	public List<Plan> getAllPlans(){
+		return userService.getAllPlans();
+		
 	}
 	
 	//to be put in transaction controller

@@ -30,11 +30,13 @@ public class BankAccount {
 	private Date createdDate;
 	private Date updatedDate;
 	private double balance;
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_uid", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+	
+	@ManyToOne
+	@JoinColumn(name="user_uid", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private User user;
+	
 	public User getUser() {
 		return user;
 	}

@@ -6,5 +6,5 @@ import com.freecharge.entities.User;
 
 public interface UserRepository extends JpaRepository<User,Integer>{
 
-	User findOne(Integer uid);
+//	User findOne(Integer uid);
 }
