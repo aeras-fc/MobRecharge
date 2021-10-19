@@ -1,5 +1,9 @@
 package com.freecharge.controllers;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,44 +13,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.freecharge.entities.BankAccount;
 import com.freecharge.entities.Transaction;
 import com.freecharge.entities.User;
+import com.freecharge.services.BankAccountService;
+import com.freecharge.services.UserService;
 
 @RestController
 @RequestMapping("/api/v1.0/mobrecharge/user")
 public class UserController {
-	@GetMapping(value="/")
-	void getAllUsers() {
-		System.out.println("get all users called");
+	@Autowired
+	UserService userService;
+	@GetMapping("/home")
+	List<User> getAllUsers() {
+		System.out.println("called");
+		return userService.getAllUsers();
 	}
-	@PostMapping(value="/")
-	void createNewUser(@RequestBody User user) {
-		System.out.println("new user creation called");
+	@PostMapping(value="")
+	Integer createNewUser(@RequestBody User user) {
+		return userService.createNewUser(user);
 	}
 	@GetMapping(value="/{uid}")
-	void getUserById(@PathVariable Integer uid) {
-		System.out.println("get users by id called");
+	Optional<User> getUserById(@PathVariable Integer uid) {
+		return userService.getUserById(uid);
 	}
 	@PutMapping(value="/{uid}")
-	void updateUserById(@RequestBody User user,@PathVariable Integer uid) {
-		System.out.println("update user called");
+	Optional<User> updateUserById(@RequestBody User user,@PathVariable Integer uid) {
+		return userService.updateUserById(user,uid);
 	}
 	@DeleteMapping(value="/{uid}")
-	void deleteUserById(@PathVariable Integer uid) {
-		System.out.println("delete user called");
+	String deleteUserById(@PathVariable Integer uid) {
+		return userService.deleteUserById(uid);
 	}
-	@GetMapping(value="/{uid}/bankaccount")
-	void getUserBankAccountDetails(@PathVariable Integer uid) {
-		System.out.println("get users bank details called");
-	}
-	@PostMapping(value="/{uid}/bankaccount")
-	void addBankAccountOfUser(@RequestBody User user,@PathVariable Integer uid) {
-		System.out.println("bank account add called");
-	}
-	@DeleteMapping(value="/{uid}/bankaccount/{bid}")
-	void deleteBankAccountOfUserByBid(@PathVariable Integer uid,@PathVariable Integer bid) {
-		System.out.println("delete user bank called");
-	}
+	
+	//to be put in transaction controller
 	@GetMapping(value="/{uid}/transaction")
 	void getAllTransactions(@PathVariable Integer uid) {
 		System.out.println("get transaction called");
@@ -55,7 +55,7 @@ public class UserController {
 	void getTransactionById(@PathVariable Integer uid,@PathVariable Integer tid) {
 		System.out.println("get transaction by id called");
 	}
-	@PostMapping(value="/{uid}/payment")
+	@PostMapping(value="/{uid}/plan/{pid}/offer/{oid}/payment")
 	void addPaymentDetails(@RequestBody Transaction transaction) {
 		System.out.println("add payment details called");
 	}
