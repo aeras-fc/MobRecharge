@@ -24,7 +24,7 @@ import com.freecharge.services.UserService;
 public class UserController {
 	@Autowired
 	UserService userService;
-	@GetMapping("/home")
+	@GetMapping("")
 	List<User> getAllUsers() {
 		System.out.println("called");
 		return userService.getAllUsers();
