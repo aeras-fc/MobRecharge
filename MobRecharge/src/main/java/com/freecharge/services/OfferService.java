@@ -38,5 +38,8 @@ public class OfferService {
 		return offerRepo.findById(oid).orElse(null);
 	}
 	
+	public boolean isPresent(Integer id) {
+		return offerRepo.existsById(id);
+	}
 
 }

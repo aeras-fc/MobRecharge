@@ -42,29 +42,28 @@ public class UserController {
 	}
 	
 	@GetMapping(value="/{uid}")
-	ResponseEntity <User> getUserById(@PathVariable Integer uid) {
-		User user = userService.getUserById(uid).orElse(null);
-		if(user != null)
-			return new ResponseEntity(user, HttpStatus.OK);
+	ResponseEntity<User> getUserById(@PathVariable Integer uid) {
+		if(userService.isPresent(uid)) 
+			return new ResponseEntity<User>(userService.getUserById(uid), HttpStatus.OK);
 		else
-			return new ResponseEntity(user, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<User>((User) null, HttpStatus.NOT_FOUND);	
 	}
 	
 	@PutMapping(value="/{uid}")
 	ResponseEntity<HttpStatus> updateUserById(@RequestBody User user,@PathVariable Integer uid) {
 		if(userService.isPresent(uid)) {
 			userService.updateUserById(user, uid);
-			return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
+			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 		}
 		else
-			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
 	}
 	
 	@DeleteMapping(value="/{uid}")
 	ResponseEntity<HttpStatus> deleteUserById(@PathVariable Integer uid) {
 		if(userService.isPresent(uid)) {
 			userService.deleteUserById(uid);
-			return new ResponseEntity<>(HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		else
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -77,7 +76,6 @@ public class UserController {
 			return new ResponseEntity<>(planList, HttpStatus.NO_CONTENT);
 		else
 			return new ResponseEntity<>(planList, HttpStatus.FOUND);
-		
 	}
 	
 	

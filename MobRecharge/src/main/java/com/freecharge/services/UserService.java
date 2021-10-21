@@ -1,7 +1,6 @@
 package com.freecharge.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +27,11 @@ public class UserService {
 		return user.getUid();
 	}
 
-	public Optional<User> getUserById(Integer uid) {
-		return userRepository.findById(uid);
+	public User getUserById(Integer uid) {
+		return userRepository.findById(uid).orElse(null);
 	}
 
-	public Optional<User> updateUserById(User user, Integer uid) {
+	public User updateUserById(User user, Integer uid) {
 		User dbuser = userRepository.findById(uid)
                 .orElse(null);
 		dbuser.setCreatedDate(user.getCreatedDate());
@@ -44,7 +43,7 @@ public class UserService {
 		dbuser.setMobileNumber(user.getMobileNumber());;
 		dbuser.setPassword(user.getPassword());
 		dbuser.setUpdatedDate(user.getUpdatedDate());
-		return userRepository.findById(uid);
+		return userRepository.findById(uid).orElse(null);
 	}
 
 	public String deleteUserById(Integer uid) {
