@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.freecharge.services.OfferService;
 import com.freecharge.services.PaymentService;
+import com.freecharge.services.PlanService;
 import com.freecharge.services.UserService;
 
 @RestController
@@ -18,6 +19,9 @@ import com.freecharge.services.UserService;
 public class PaymentController {
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	PlanService planService;
 	
 	@Autowired
 	OfferService offerService;
@@ -29,7 +33,7 @@ public class PaymentController {
 	@PreAuthorize("hasRole('USER')")
 	ResponseEntity<String> payment(@PathVariable Integer uid, @PathVariable Integer pid, @PathVariable Integer oid){
 		
-		if(!userService.isPresent(uid) || !offerService.isPresent(oid))
+		if(!userService.isPresent(uid) || !planService.isPresent(pid) || !offerService.isPresent(oid))
 			return new ResponseEntity<String>("Invalid Arguments", HttpStatus.BAD_REQUEST);
 		else {
 			paymentService.addTransaction(uid, pid, oid);

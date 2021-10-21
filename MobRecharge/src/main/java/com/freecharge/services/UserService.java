@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.freecharge.entities.Plan;
 import com.freecharge.entities.User;
-import com.freecharge.repos.PlanRepo;
 import com.freecharge.repos.UserRepository;
 
 @Service
@@ -15,23 +13,20 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 	
-	@Autowired
-	PlanRepo planRepo;
-	
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
-	}
-
 	public Integer createNewUser(User user) {
 		userRepository.save(user);
 		return user.getUid();
 	}
 
-	public User getUserById(Integer uid) {
+	public User getById(Integer uid) {
 		return userRepository.findById(uid).orElse(null);
 	}
+	
+	public List<User> getAll() {
+		return userRepository.findAll();
+	}
 
-	public User updateUserById(User user, Integer uid) {
+	public User updateById(User user, Integer uid) {
 		User dbuser = userRepository.findById(uid)
                 .orElse(null);
 		dbuser.setCreatedDate(user.getCreatedDate());
@@ -46,13 +41,9 @@ public class UserService {
 		return userRepository.findById(uid).orElse(null);
 	}
 
-	public String deleteUserById(Integer uid) {
+	public String deleteById(Integer uid) {
 		userRepository.deleteById(uid);
 		return "deleted";
-	}
-	
-	public List<Plan> getAllPlans(){
-		return planRepo.findAll();
 	}
 	
 	public boolean isPresent(Integer id) {

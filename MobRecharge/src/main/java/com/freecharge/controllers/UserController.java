@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.freecharge.entities.Plan;
 import com.freecharge.entities.Transaction;
 import com.freecharge.entities.User;
+import com.freecharge.services.PlanService;
 import com.freecharge.services.UserService;
 
 @RestController
@@ -25,12 +26,15 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	PlanService planService;
+	
 	
 	@GetMapping("/")
 	@PreAuthorize("hasRole('ADMIN')")
 	ResponseEntity <List<User>> getAllUsers() {
 		System.out.println("called");
-		List <User> userList = userService.getAllUsers();
+		List <User> userList = userService.getAll();
 		if(userList.isEmpty())
 			return new ResponseEntity<>(userList, HttpStatus.NO_CONTENT);
 		else
@@ -42,7 +46,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	ResponseEntity<User> getUserById(@PathVariable Integer uid) {
 		if(userService.isPresent(uid)) 
-			return new ResponseEntity<User>(userService.getUserById(uid), HttpStatus.OK);
+			return new ResponseEntity<User>(userService.getById(uid), HttpStatus.OK);
 		else
 			return new ResponseEntity<User>((User) null, HttpStatus.NOT_FOUND);	
 	}
@@ -51,7 +55,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	ResponseEntity<HttpStatus> updateUserById(@RequestBody User user,@PathVariable Integer uid) {
 		if(userService.isPresent(uid)) {
-			userService.updateUserById(user, uid);
+			userService.updateById(user, uid);
 			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 		}
 		else
@@ -62,7 +66,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	ResponseEntity<HttpStatus> deleteUserById(@PathVariable Integer uid) {
 		if(userService.isPresent(uid)) {
-			userService.deleteUserById(uid);
+			userService.deleteById(uid);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		else
@@ -71,7 +75,7 @@ public class UserController {
 	
 	@GetMapping(value="/plans")
 	ResponseEntity <List<Plan>> getAllPlans(){
-		List <Plan> planList = userService.getAllPlans();
+		List <Plan> planList = planService.getAll();
 		if(planList.isEmpty())
 			return new ResponseEntity<>(planList, HttpStatus.NO_CONTENT);
 		else

@@ -12,21 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.freecharge.entities.Offer;
 import com.freecharge.entities.Plan;
-import com.freecharge.repos.PlanRepo;
 import com.freecharge.services.AdminService;
+import com.freecharge.services.PlanService;
 
 @RestController
 @RequestMapping("/api/v1.0/mobrecharge/admin")
 public class AdminController {
 	@Autowired
 	AdminService adminService;
+	
 	@Autowired
-	PlanRepo planRepo;
+	PlanService planService;
 	
 	@PostMapping("/plan/{pid}/offer")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> addOffer(@RequestBody Offer offer, @PathVariable Integer pid) {
-		if(planRepo.existsById(pid)) {
+		if(planService.isPresent(pid)) {
 			adminService.addOffer(offer, pid);
 			return new ResponseEntity<String>("Offer Added with ID: " + offer.getId(), HttpStatus.CREATED);
 		}
