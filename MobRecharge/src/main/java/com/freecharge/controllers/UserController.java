@@ -1,9 +1,9 @@
 package com.freecharge.controllers;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,36 +26,60 @@ public class UserController {
 	
 	
 	@GetMapping("/")
-	List<User> getAllUsers() {
+	ResponseEntity <List<User>> getAllUsers() {
 		System.out.println("called");
-		return userService.getAllUsers();
+		List <User> userList = userService.getAllUsers();
+		if(userList.isEmpty())
+			return new ResponseEntity<>(userList, HttpStatus.NO_CONTENT);
+		else
+			return new ResponseEntity<>(userList, HttpStatus.FOUND);
 	}
 	
 	@PostMapping(value="/signup")
-	Integer createNewUser(@RequestBody User user) {
-		return userService.createNewUser(user);
+	ResponseEntity<String> createUser(@RequestBody User user) {
+		Integer id = userService.createNewUser(user);
+		return new ResponseEntity<>("User added successfully with ID: " + id, HttpStatus.CREATED);
 	}
 	
 	@GetMapping(value="/{uid}")
-	Optional<User> getUserById(@PathVariable Integer uid) {
-		return userService.getUserById(uid);
+	ResponseEntity <User> getUserById(@PathVariable Integer uid) {
+		User user = userService.getUserById(uid).orElse(null);
+		if(user != null)
+			return new ResponseEntity(user, HttpStatus.OK);
+		else
+			return new ResponseEntity(user, HttpStatus.NOT_FOUND);
 	}
 	
 	@PutMapping(value="/{uid}")
-	Optional<User> updateUserById(@RequestBody User user,@PathVariable Integer uid) {
-		return userService.updateUserById(user,uid);
+	ResponseEntity<HttpStatus> updateUserById(@RequestBody User user,@PathVariable Integer uid) {
+		if(userService.isPresent(uid)) {
+			userService.updateUserById(user, uid);
+			return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
+		}
+		else
+			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
 	}
 	
 	@DeleteMapping(value="/{uid}")
-	String deleteUserById(@PathVariable Integer uid) {
-		return userService.deleteUserById(uid);
+	ResponseEntity<HttpStatus> deleteUserById(@PathVariable Integer uid) {
+		if(userService.isPresent(uid)) {
+			userService.deleteUserById(uid);
+			return new ResponseEntity<>(HttpStatus.ACCEPTED);
+		}
+		else
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
 	@GetMapping(value="/plans")
-	public List<Plan> getAllPlans(){
-		return userService.getAllPlans();
+	ResponseEntity <List<Plan>> getAllPlans(){
+		List <Plan> planList = userService.getAllPlans();
+		if(planList.isEmpty())
+			return new ResponseEntity<>(planList, HttpStatus.NO_CONTENT);
+		else
+			return new ResponseEntity<>(planList, HttpStatus.FOUND);
 		
 	}
+	
 	
 	//to be put in transaction controller
 	@GetMapping(value="/{uid}/transaction")

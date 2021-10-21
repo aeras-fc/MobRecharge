@@ -30,12 +30,12 @@ public class BankAccountService {
 		return "Bank Added";
 		
 	}	
-//	public String deleteBankAccountOfUserByBid(Integer uid, Integer bid) {
-//		if(userRepository.findById(uid).isPresent()) {
-//			bankAccountRepository.deleteById(bid);
-//			return "deleted";
-//		}
-//		return "user not exist";
-//	}
+	public String deleteBankAccountOfUserByBid(Integer uid, Integer bid) {
+		if(userRepository.findById(uid).isPresent()) {
+			bankAccountRepository.deleteById(bid);
+			return "deleted";
+		}
+		return "user not exist";
+	}
 
 }
