@@ -31,14 +31,15 @@ public class PaymentService {
 	
 	
 	public Integer addTransaction(Integer uid, Integer pid, Integer oid) {
+		
 		User user = userRepo.findById(uid).orElse(null);
 		Plan plan = planRepo.findById(pid).orElse(null);
 		Offer offer = offerRepo.findById(oid).orElse(null);
 		
 		double amount;
 		if(plan.getPrice() >= offer.getMinValue()) {
-			double discountedAmt = plan.getPrice() - (offer.getDiscountPercentage()/100.00)*plan.getPrice();
-			amount = Math.min(discountedAmt, offer.getCeilingValue());
+			double discountedAmt = (offer.getDiscountPercentage()/100.00)*plan.getPrice();
+			amount = plan.getPrice() - Math.min(discountedAmt, offer.getCeilingValue());
 		}
 		else
 			amount = plan.getPrice();

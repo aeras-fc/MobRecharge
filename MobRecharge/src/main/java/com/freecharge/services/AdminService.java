@@ -22,6 +22,7 @@ public class AdminService {
 		offerRepo.save(offer);
 		return offer.getId();
 	}
+	
 	public Integer addPlan(Plan plan) {
 		planRepo.save(plan);
 		return plan.getId();

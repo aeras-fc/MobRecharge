@@ -15,7 +15,7 @@ import com.freecharge.services.PlanService;
 import com.freecharge.services.UserService;
 
 @RestController
-@RequestMapping("/api/v1.0/mobrecharge/user/{uid}/plan/{pid}/offer/{uid}")
+@RequestMapping("/api/v1.0/mobrecharge/user/{uid}/plan/{pid}/offer/{oid}")
 public class PaymentController {
 	@Autowired
 	UserService userService;
