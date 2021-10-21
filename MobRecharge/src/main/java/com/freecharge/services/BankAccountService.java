@@ -1,7 +1,6 @@
 package com.freecharge.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,20 +21,26 @@ public class BankAccountService {
 		return bankAccountRepository.findByUserUid(uid);
 	}
 	
-	public String addBankAccount(BankAccount bankAccount,Integer uid) {
+	public Integer addBankAccount(BankAccount bankAccount,Integer uid) {
 		User user = userRepository.findById(uid)
                 .orElse(null);
 		bankAccount.setUser(user);
 		bankAccountRepository.save(bankAccount);
-		return "Bank Added";
-		
+		return bankAccount.getBid();
 	}	
-	public String deleteBankAccountOfUserByBid(Integer uid, Integer bid) {
-		if(userRepository.findById(uid).isPresent()) {
-			bankAccountRepository.deleteById(bid);
-			return "deleted";
-		}
-		return "user not exist";
+	
+	public boolean isPresent(Integer id) {
+		return bankAccountRepository.existsById(id);
 	}
+	
+	public void deleteBankAccount(Integer id) {
+		bankAccountRepository.deleteById(id);
+		return;
+	}
+	
+	public BankAccount getBankAccount(Integer bid) {
+		return bankAccountRepository.getById(bid);
+	}
+	
 
 }
