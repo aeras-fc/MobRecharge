@@ -1,21 +1,35 @@
 package com.freecharge.entities;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import com.freecharge.entities.Role;
 
 @Entity
-@Table(name="users")
+@Table(name="users",
+	uniqueConstraints = { 
+		@UniqueConstraint(columnNames = "username"),
+		@UniqueConstraint(columnNames = "email") 
+	})
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer uid;
-
 	private String firstname;
 	private String lastname;
+	private String username=firstname+lastname;
 	private String password;
 	private String email;
 	private String mobileNumber;
@@ -23,8 +37,31 @@ public class User {
 	private Gender gender;
 	private Date createdDate;
 	private Date updatedDate;
-	
-	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(	name = "user_roles", 
+				joinColumns = @JoinColumn(name = "user_id"), 
+				inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+	public User() {}
+	public User(String username, String firstname, String lastname, String email, String mobileNumber, Date dob,
+			Gender gender, Date createdDate, Date updatedDate, String encode) {
+		this.username=username;
+		this.firstname=firstname;
+		this.lastname=lastname;
+		this.email=email;
+		this.mobileNumber=mobileNumber;
+		this.dob=dob;
+		this.gender=gender;
+		this.createdDate=createdDate;
+		this.updatedDate=updatedDate;
+		password=encode;
+	}
+	public String getUsername() {
+		return firstname+lastname;
+	}
+	public void setUsername(String username) {
+		this.username=username;
+	}
 	public Integer getUid() {
 		return uid;
 	}
@@ -86,6 +123,13 @@ public class User {
 	}
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 	
 }

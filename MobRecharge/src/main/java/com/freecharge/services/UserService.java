@@ -55,5 +55,9 @@ public class UserService {
 	public List<Plan> getAllPlans(){
 		return planRepo.findAll();
 	}
+	
+	public boolean isPresent(Integer id) {
+		return userRepository.existsById(id);
+	}
 
 }

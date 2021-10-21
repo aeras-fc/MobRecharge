@@ -1,6 +1,7 @@
 package com.freecharge.jwt.controllers;
 
 import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//import com.freecharge.jwt.models.ERole;
-//import com.freecharge.jwt.models.Role;
+import com.freecharge.entities.ERole;
+import com.freecharge.entities.Role;
 import com.freecharge.entities.User;
-//import com.freecharge.jwt.repository.RoleRepository;
+import com.freecharge.jwt.repository.RoleRepository;
 import com.freecharge.repos.UserRepository;
 import com.freecharge.security.jwt.JwtUtils;
 import com.freecharge.security.services.UserDetailsImpl;
@@ -69,7 +70,12 @@ public class AuthController {
 		return ResponseEntity.ok(new JwtResponse(jwt, 
 												 userDetails.getId(), 
 												 userDetails.getUsername(), 
-												 userDetails.getEmail(), 
+												 userDetails.getEmail(),
+												 userDetails.getMobileNumber(),
+												 userDetails.getDob(),
+												 userDetails.getGender(),
+												 userDetails.getCreatedDate(),
+												 userDetails.getUpdatedDate(),
 												 roles));
 	}
 
@@ -88,13 +94,17 @@ public class AuthController {
 		}
 
 		// Create new user's account
-		User user = new User(signUpRequest.getUsername(), 
+		User user = new User(signUpRequest.getUsername(),signUpRequest.getFirstname(),signUpRequest.getLastname(),
 							 signUpRequest.getEmail(),
+							 signUpRequest.getMobileNumber(),
+							 signUpRequest.getDob(),
+							 signUpRequest.getGender(),
+							 signUpRequest.getCreatedDate(),
+							 signUpRequest.getUpdatedDate(),
 							 encoder.encode(signUpRequest.getPassword()));
 
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();
-
 		if (strRoles == null) {
 			Role userRole = roleRepository.findByName(ERole.ROLE_USER)
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));

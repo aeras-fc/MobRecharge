@@ -14,11 +14,11 @@ import io.jsonwebtoken.*;
 public class JwtUtils {
 	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-	@Value("${bezkoder.app.jwtSecret}")
-	private String jwtSecret;
+	//@Value("${freecharge.app.jwtSecret}")
+	private String jwtSecret="secret";
 
-	@Value("${bezkoder.app.jwtExpirationMs}")
-	private int jwtExpirationMs;
+	//@Value("${freecharge.app.jwtExpirationMs}")
+	private int jwtExpirationMs=2000;
 
 	public String generateJwtToken(Authentication authentication) {
 
