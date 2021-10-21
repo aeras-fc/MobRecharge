@@ -30,7 +30,7 @@ public class PaymentService {
 	OfferRepo offerRepo;
 	
 	
-	public Integer addTransaction(Transaction transaction, Integer uid, Integer pid, Integer oid) {
+	public Integer addTransaction(Integer uid, Integer pid, Integer oid) {
 		User user = userRepo.findById(uid).orElse(null);
 		Plan plan = planRepo.findById(pid).orElse(null);
 		Offer offer = offerRepo.findById(oid).orElse(null);
@@ -43,13 +43,15 @@ public class PaymentService {
 		else
 			amount = plan.getPrice();
 		
-		transaction.setCreatedDate(new Date());
-		transaction.setAmount(amount);
-		transaction.setStatus(Status.Successful);
-		transaction.setUser(user);
-		transaction.setPlan(plan);
-		transaction.setOffer(offer);
-		
+		Transaction transaction = new Transaction(
+				new Date(),
+				amount,
+				Status.Successful,
+				user,
+				plan,
+				offer
+				);
+				
 		transactionRepo.save(transaction);
 		return transaction.getId();
 	}
