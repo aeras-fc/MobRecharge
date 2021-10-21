@@ -34,7 +34,7 @@ public class BankAccountController {
 		if(!userService.isPresent(uid))
 			return new ResponseEntity<List<BankAccount>>((List<BankAccount>) null, HttpStatus.BAD_REQUEST);
 		else {
-			List <BankAccount> listAccount = bankService.getUserBankAccounts(uid);
+			List <BankAccount> listAccount = bankService.getByUid(uid);
 			if(listAccount.isEmpty())
 				return new ResponseEntity<List<BankAccount>>(listAccount, HttpStatus.NO_CONTENT);
 			else
@@ -48,7 +48,7 @@ public class BankAccountController {
 		if(!userService.isPresent(uid))
 			return new ResponseEntity<String>("User not available", HttpStatus.BAD_REQUEST);
 		else {
-			bankService.addBankAccount(bankAccount, uid);
+			bankService.add(bankAccount, uid);
 			return new ResponseEntity<>("Bank Added Successfully with ID: " + bankAccount.getBid(), HttpStatus.CREATED);
 		}
 	}
@@ -59,8 +59,8 @@ public class BankAccountController {
 		if(!userService.isPresent(uid))
 			return new ResponseEntity<String>("User not present!", HttpStatus.BAD_REQUEST);
 		else {
-			if(bankService.isPresent(bid) && bankService.getBankAccount(bid).getUser().getUid().equals(uid)) {
-				bankService.deleteBankAccount(bid);
+			if(bankService.isPresent(bid) && bankService.getByBid(bid).getUser().getUid().equals(uid)) {
+				bankService.delete(bid);
 				return new ResponseEntity<String>("Bank Account Deleted", HttpStatus.OK);
 			}
 			else 

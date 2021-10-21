@@ -17,11 +17,11 @@ public class BankAccountService {
 	@Autowired
 	BankAccountRepository bankAccountRepository;
 	
-	public List<BankAccount> getUserBankAccounts(Integer uid) {
+	public List<BankAccount> getByUid(Integer uid) {
 		return bankAccountRepository.findByUserUid(uid);
 	}
 	
-	public Integer addBankAccount(BankAccount bankAccount,Integer uid) {
+	public Integer add(BankAccount bankAccount,Integer uid) {
 		User user = userRepository.findById(uid)
                 .orElse(null);
 		bankAccount.setUser(user);
@@ -33,12 +33,12 @@ public class BankAccountService {
 		return bankAccountRepository.existsById(id);
 	}
 	
-	public void deleteBankAccount(Integer id) {
+	public void delete(Integer id) {
 		bankAccountRepository.deleteById(id);
 		return;
 	}
 	
-	public BankAccount getBankAccount(Integer bid) {
+	public BankAccount getByBid(Integer bid) {
 		return bankAccountRepository.getById(bid);
 	}
 	
