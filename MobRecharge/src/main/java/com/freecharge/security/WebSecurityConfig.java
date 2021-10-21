@@ -14,9 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.freecharge.security.services.UserDetailsServiceImpl;
 import com.freecharge.security.jwt.AuthEntryPointJwt;
 import com.freecharge.security.jwt.AuthTokenFilter;
+import com.freecharge.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -57,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).and()
-			.authorizeRequests().antMatchers("/api/auth/**").permitAll()
+			.authorizeRequests().antMatchers("/api/v1.0/mobrecharge/**").permitAll()
 			.antMatchers("/api/test/**").permitAll()
 			
 			.anyRequest().authenticated();

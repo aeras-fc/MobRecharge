@@ -3,6 +3,7 @@ package com.freecharge.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ public class AdminController {
 	PlanRepo planRepo;
 	
 	@PostMapping("/plan/{pid}/offer")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> addOffer(@RequestBody Offer offer, @PathVariable Integer pid) {
 		if(planRepo.existsById(pid)) {
 			adminService.addOffer(offer, pid);
@@ -33,6 +35,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/plan")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> addPlan(@RequestBody Plan plan){
        adminService.addPlan(plan);
        return new ResponseEntity<String>("Plan added successfully with ID: " + plan.getId(), HttpStatus.CREATED);

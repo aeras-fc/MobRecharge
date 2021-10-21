@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class OfferController {
 	}
 	
 	@PutMapping("/{oid}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> updateOffer(@RequestBody Offer offer, @PathVariable Integer oid) {
 		if(offerService.isPresent(oid)) {
 			offerService.update(offer, oid);
@@ -43,6 +45,7 @@ public class OfferController {
 	}
 	
 	@DeleteMapping("/{oid}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> deleteOffer(@PathVariable Integer oid) {
 		if(offerService.isPresent(oid)) {
 			offerService.delete(oid);
@@ -53,6 +56,7 @@ public class OfferController {
 	}
 	
 	@GetMapping("/{oid}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<Offer> getOffer(@PathVariable Integer oid) {
 		if(offerService.isPresent(oid)) 
 			return new ResponseEntity<Offer>(offerService.offer(oid), HttpStatus.OK);

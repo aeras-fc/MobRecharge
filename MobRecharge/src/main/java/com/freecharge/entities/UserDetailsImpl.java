@@ -1,4 +1,4 @@
-package com.freecharge.security.services;
+package com.freecharge.entities;
 
 
 import java.util.Collection;
@@ -11,8 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.freecharge.entities.Gender;
-import com.freecharge.entities.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDetailsImpl implements UserDetails {
@@ -20,8 +18,10 @@ public class UserDetailsImpl implements UserDetails {
 
 	private Integer id;
 
+	private String firstname;
+	private String lastname;
 	private String username;
-
+   
 	private String email;
 	private String mobileNumber;
 	private Date dob;
@@ -35,9 +35,11 @@ public class UserDetailsImpl implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Integer id, String username, String email, String password,String mobileNumber,Date dob,Gender gender,Date createdDate,Date updatedDate,
+	public UserDetailsImpl(Integer id, String firstname, String lastname, String username, String email, String password,String mobileNumber,Date dob,Gender gender,Date createdDate,Date updatedDate,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
+		this.firstname = firstname;
+		this.lastname = lastname;
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -56,6 +58,8 @@ public class UserDetailsImpl implements UserDetails {
 
 		return new UserDetailsImpl(
 				user.getUid(), 
+				user.getFirstname(),
+				user.getLastname(),
 				user.getUsername(), 
 				user.getEmail(),
 				user.getPassword(),
@@ -102,6 +106,22 @@ public class UserDetailsImpl implements UserDetails {
 	@Override
 	public String getUsername() {
 		return username;
+	}
+	
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	@Override

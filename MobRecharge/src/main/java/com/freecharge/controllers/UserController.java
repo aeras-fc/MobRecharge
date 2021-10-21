@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class UserController {
 	
 	
 	@GetMapping("/")
+	@PreAuthorize("hasRole('ADMIN')")
 	ResponseEntity <List<User>> getAllUsers() {
 		System.out.println("called");
 		List <User> userList = userService.getAllUsers();
@@ -35,13 +37,9 @@ public class UserController {
 			return new ResponseEntity<>(userList, HttpStatus.FOUND);
 	}
 	
-	@PostMapping(value="/signup")
-	ResponseEntity<String> createUser(@RequestBody User user) {
-		Integer id = userService.createNewUser(user);
-		return new ResponseEntity<>("User added successfully with ID: " + id, HttpStatus.CREATED);
-	}
 	
 	@GetMapping(value="/{uid}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	ResponseEntity<User> getUserById(@PathVariable Integer uid) {
 		if(userService.isPresent(uid)) 
 			return new ResponseEntity<User>(userService.getUserById(uid), HttpStatus.OK);
@@ -50,6 +48,7 @@ public class UserController {
 	}
 	
 	@PutMapping(value="/{uid}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	ResponseEntity<HttpStatus> updateUserById(@RequestBody User user,@PathVariable Integer uid) {
 		if(userService.isPresent(uid)) {
 			userService.updateUserById(user, uid);
@@ -60,6 +59,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping(value="/{uid}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	ResponseEntity<HttpStatus> deleteUserById(@PathVariable Integer uid) {
 		if(userService.isPresent(uid)) {
 			userService.deleteUserById(uid);

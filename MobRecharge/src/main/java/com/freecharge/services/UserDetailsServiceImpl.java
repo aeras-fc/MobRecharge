@@ -1,4 +1,4 @@
-package com.freecharge.security.services;
+package com.freecharge.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.freecharge.entities.User;
+import com.freecharge.entities.UserDetailsImpl;
 import com.freecharge.repos.UserRepository;
 
 @Service

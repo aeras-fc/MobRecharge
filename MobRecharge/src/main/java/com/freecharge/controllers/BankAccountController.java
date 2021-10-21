@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class BankAccountController {
 	
 	
 	@GetMapping(value="/")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	ResponseEntity <List<BankAccount>> getBankAccount(@PathVariable Integer uid) {
 		if(!userService.isPresent(uid))
 			return new ResponseEntity<List<BankAccount>>((List<BankAccount>) null, HttpStatus.BAD_REQUEST);
@@ -41,6 +43,7 @@ public class BankAccountController {
 	}
 	
 	@PostMapping(value="/")
+	@PreAuthorize("hasRole('USER')")
 	ResponseEntity<String> addBankAccount(@RequestBody BankAccount bankAccount, @PathVariable Integer uid) {
 		if(!userService.isPresent(uid))
 			return new ResponseEntity<String>("User not available", HttpStatus.BAD_REQUEST);
@@ -51,6 +54,7 @@ public class BankAccountController {
 	}
 	
 	@DeleteMapping(value="/{bid}")
+	@PreAuthorize("hasRole('USER')")
 	ResponseEntity<String> deleteBankAccountByBid(@PathVariable Integer uid, @PathVariable Integer bid) {
 		if(!userService.isPresent(uid))
 			return new ResponseEntity<String>("User not present!", HttpStatus.BAD_REQUEST);

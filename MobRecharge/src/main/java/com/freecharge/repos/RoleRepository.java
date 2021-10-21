@@ -1,4 +1,4 @@
-package com.freecharge.jwt.repository;
+package com.freecharge.repos;
 
 import java.util.Optional;
 
