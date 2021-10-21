@@ -3,7 +3,6 @@ package com.freecharge.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,15 +21,19 @@ public class BankAccountController {
 	
 	
 	@GetMapping(value="/")
-	List<BankAccount> getUserBankAccountDetails(@PathVariable Integer uid) {
-		return bankAccountService.getUserBankAccountDetails(uid);
+	List<BankAccount> getBankAccount(@PathVariable Integer uid) {
+		return bankAccountService.getUserBankAccounts(uid);
 	}
+	
 	@PostMapping(value="/")
-	BankAccount addBankAccountOfUser(@RequestBody BankAccount bankAccount,@PathVariable Integer uid) {
-		return bankAccountService.addBankAccountOfUser(bankAccount,uid);
+	String addBankAccount(@RequestBody BankAccount bankAccount, @PathVariable Integer uid) {
+		bankAccountService.addBankAccount(bankAccount, uid);
+		System.out.println("Post Bank Account added!");
+		return "Bank Added";
 	}
-	@DeleteMapping(value="/{bid}")
-	String deleteBankAccountOfUserByBid(@PathVariable Integer uid,@PathVariable Integer bid) {
-		return bankAccountService.deleteBankAccountOfUserByBid(uid,bid);
-	}
+	
+//	@DeleteMapping(value="/{bid}")
+//	String deleteBankAccountOfUserByBid(@PathVariable Integer uid,@PathVariable Integer bid) {
+//		return bankAccountService.deleteBankAccountOfUserByBid(uid,bid);
+//	}
 }

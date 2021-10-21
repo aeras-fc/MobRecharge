@@ -1,7 +1,6 @@
 package com.freecharge.entities;
 
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +14,6 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer uid;
 
-	private boolean isAdmin;
 	private String firstname;
 	private String lastname;
 	private String password;
@@ -26,18 +24,15 @@ public class User {
 	private Date createdDate;
 	private Date updatedDate;
 	
+	
 	public Integer getUid() {
 		return uid;
 	}
+	
 	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
+	
 	public String getFirstname() {
 		return firstname;
 	}

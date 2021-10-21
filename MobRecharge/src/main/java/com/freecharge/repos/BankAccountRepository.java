@@ -8,6 +8,6 @@ import com.freecharge.entities.BankAccount;
 
 public interface BankAccountRepository extends JpaRepository<BankAccount,Integer>{
 
-	List<BankAccount> findByUid(Integer uid);
+	List<BankAccount> findByUserUid(Integer uid);
 	
 }
