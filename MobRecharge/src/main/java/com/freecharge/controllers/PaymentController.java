@@ -17,23 +17,24 @@ import com.freecharge.services.UserService;
 @RestController
 @RequestMapping("/api/v1.0/mobrecharge/user/{uid}/plan/{pid}/offer/{oid}")
 public class PaymentController {
+
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	PlanService planService;
-	
+
 	@Autowired
 	OfferService offerService;
-	
+
 	@Autowired
 	PaymentService paymentService;
-	
+
 	@PostMapping("/")
 	@PreAuthorize("hasRole('USER')")
-	ResponseEntity<String> payment(@PathVariable Integer uid, @PathVariable Integer pid, @PathVariable Integer oid){
-		
-		if(!userService.isPresent(uid) || !planService.isPresent(pid) || !offerService.isPresent(oid))
+	ResponseEntity<String> payment(@PathVariable Integer uid, @PathVariable Integer pid, @PathVariable Integer oid) {
+
+		if (!userService.isPresent(uid) || !planService.isPresent(pid) || !offerService.isPresent(oid))
 			return new ResponseEntity<String>("Invalid Arguments", HttpStatus.BAD_REQUEST);
 		else {
 			paymentService.addTransaction(uid, pid, oid);

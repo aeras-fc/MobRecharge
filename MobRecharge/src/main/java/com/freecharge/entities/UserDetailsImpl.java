@@ -1,6 +1,5 @@
 package com.freecharge.entities;
 
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -21,21 +20,21 @@ public class UserDetailsImpl implements UserDetails {
 	private String firstname;
 	private String lastname;
 	private String username;
-   
+
 	private String email;
 	private String mobileNumber;
 	private Date dob;
 	private Gender gender;
 	private Date createdDate;
 	private Date updatedDate;
-	
 
 	@JsonIgnore
 	private String password;
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Integer id, String firstname, String lastname, String username, String email, String password,String mobileNumber,Date dob,Gender gender,Date createdDate,Date updatedDate,
+	public UserDetailsImpl(Integer id, String firstname, String lastname, String username, String email,
+			String password, String mobileNumber, Date dob, Gender gender, Date createdDate, Date updatedDate,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.firstname = firstname;
@@ -43,32 +42,21 @@ public class UserDetailsImpl implements UserDetails {
 		this.username = username;
 		this.email = email;
 		this.password = password;
-		this.mobileNumber=mobileNumber;
-		this.dob=dob;
-		this.gender=gender;
-		this.createdDate=createdDate;
-		this.updatedDate=updatedDate;
+		this.mobileNumber = mobileNumber;
+		this.dob = dob;
+		this.gender = gender;
+		this.createdDate = createdDate;
+		this.updatedDate = updatedDate;
 		this.authorities = authorities;
 	}
 
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName().name()))
-				.collect(Collectors.toList());
+				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
 
-		return new UserDetailsImpl(
-				user.getId(), 
-				user.getFirstname(),
-				user.getLastname(),
-				user.getUsername(), 
-				user.getEmail(),
-				user.getPassword(),
-				user.getMobileNumber(),
-				user.getDob(),
-				user.getGender(),
-				user.getCreatedDate(),
-				user.getUpdatedDate(),
-				authorities);
+		return new UserDetailsImpl(user.getId(), user.getFirstname(), user.getLastname(), user.getUsername(),
+				user.getEmail(), user.getPassword(), user.getMobileNumber(), user.getDob(), user.getGender(),
+				user.getCreatedDate(), user.getUpdatedDate(), authorities);
 	}
 
 	@Override
@@ -83,21 +71,27 @@ public class UserDetailsImpl implements UserDetails {
 	public String getEmail() {
 		return email;
 	}
+
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
+
 	public Date getDob() {
 		return dob;
 	}
+
 	public Gender getGender() {
 		return gender;
 	}
+
 	public Date getCreatedDate() {
 		return createdDate;
 	}
+
 	public Date getUpdatedDate() {
 		return updatedDate;
 	}
+
 	@Override
 	public String getPassword() {
 		return password;
@@ -107,7 +101,7 @@ public class UserDetailsImpl implements UserDetails {
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public String getFirstname() {
 		return firstname;
 	}
@@ -154,4 +148,3 @@ public class UserDetailsImpl implements UserDetails {
 		return Objects.equals(id, user.id);
 	}
 }
-

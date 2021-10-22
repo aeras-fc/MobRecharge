@@ -20,45 +20,44 @@ import com.freecharge.services.OfferService;
 @RestController
 @RequestMapping("/api/v1.0/mobrecharge/offer")
 public class OfferController {
-	
-	@Autowired 
+
+	@Autowired
 	OfferService offerService;
-	
+
 	@GetMapping("/")
-	ResponseEntity <List<Offer>> getAllOffers() {
+	ResponseEntity<List<Offer>> getAllOffers() {
 		System.out.println("called");
-		List <Offer> offerList = offerService.getAll();
-		if(offerList.isEmpty())
+		List<Offer> offerList = offerService.getAll();
+		if (offerList.isEmpty())
 			return new ResponseEntity<List<Offer>>(offerList, HttpStatus.NO_CONTENT);
 		else
 			return new ResponseEntity<List<Offer>>(offerList, HttpStatus.FOUND);
 	}
-	
+
 	@PutMapping("/{oid}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> updateOffer(@RequestBody Offer offer, @PathVariable Integer oid) {
-		if(offerService.isPresent(oid)) {
+		if (offerService.isPresent(oid)) {
 			offerService.update(offer, oid);
 			return new ResponseEntity<String>("Updated Successfully", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("Offer not available", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@DeleteMapping("/{oid}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> deleteOffer(@PathVariable Integer oid) {
-		if(offerService.isPresent(oid)) {
+		if (offerService.isPresent(oid)) {
 			offerService.delete(oid);
 			return new ResponseEntity<String>("Deleted Successfully", HttpStatus.OK);
-		}
-		else 
+		} else
 			return new ResponseEntity<String>("Offer not available", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping("/{oid}")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public ResponseEntity<Offer> getOffer(@PathVariable Integer oid) {
-		if(offerService.isPresent(oid)) 
+		if (offerService.isPresent(oid))
 			return new ResponseEntity<Offer>(offerService.offer(oid), HttpStatus.OK);
 		else
 			return new ResponseEntity<Offer>((Offer) null, HttpStatus.NOT_FOUND);

@@ -11,33 +11,32 @@ import javax.persistence.Table;
 import com.sun.istack.NotNull;
 
 @Entity
-@Table(name="plans")
+@Table(name = "plans")
 public class Plan {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@NotNull
 	private double price;
-	
+
 	@NotNull
 	private int validityDays;
-	
+
 	@NotNull
 	private String data;
-	
+
 	@NotNull
 	private String sms;
-	
+
 	@NotNull
 	private String calls;
-	
+
 	@NotNull
 	private Date createdDate;
-	
+
 	@NotNull
 	private Date updatedDate;
-	
 
 	public Integer getId() {
 		return id;

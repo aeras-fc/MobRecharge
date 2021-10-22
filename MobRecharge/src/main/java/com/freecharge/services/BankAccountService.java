@@ -16,31 +16,29 @@ public class BankAccountService {
 	UserRepository userRepository;
 	@Autowired
 	BankAccountRepository bankAccountRepository;
-	
+
 	public List<BankAccount> getByUid(Integer uid) {
-		return bankAccountRepository.findByUserUid(uid);
+		return bankAccountRepository.findByUserId(uid);
 	}
-	
-	public Integer add(BankAccount bankAccount,Integer uid) {
-		User user = userRepository.findById(uid)
-                .orElse(null);
+
+	public Integer add(BankAccount bankAccount, Integer uid) {
+		User user = userRepository.findById(uid).orElse(null);
 		bankAccount.setUser(user);
 		bankAccountRepository.save(bankAccount);
 		return bankAccount.getBid();
-	}	
-	
+	}
+
 	public boolean isPresent(Integer id) {
 		return bankAccountRepository.existsById(id);
 	}
-	
+
 	public void delete(Integer id) {
 		bankAccountRepository.deleteById(id);
 		return;
 	}
-	
+
 	public BankAccount getByBid(Integer bid) {
 		return bankAccountRepository.getById(bid);
 	}
-	
 
 }

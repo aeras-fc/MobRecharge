@@ -21,30 +21,29 @@ import com.freecharge.services.PlanService;
 public class AdminController {
 	@Autowired
 	AdminService adminService;
-	
+
 	@Autowired
 	PlanService planService;
-	
+
 	@PostMapping("/plan/{pid}/offer")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> addOffer(@RequestBody Offer offer, @PathVariable Integer pid) {
-		if(offer.getCeilingValue() < 0 || offer.getDiscountPercentage() < 0|| offer.getDiscountPercentage() < 0)
+		if (offer.getCeilingValue() < 0 || offer.getDiscountPercentage() < 0 || offer.getDiscountPercentage() < 0)
 			throw new InvalidInputException();
-	    else if(planService.isPresent(pid)) {
+		else if (planService.isPresent(pid)) {
 			adminService.addOffer(offer, pid);
 			return new ResponseEntity<String>("Offer Added with ID: " + offer.getId(), HttpStatus.CREATED);
-		}
-		else
+		} else
 			return new ResponseEntity<String>("Plan doesn't exist", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@PostMapping("/plan")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<String> addPlan(@RequestBody Plan plan){
-		if(plan.getPrice() < 0)
+	public ResponseEntity<String> addPlan(@RequestBody Plan plan) {
+		if (plan.getPrice() < 0)
 			throw new InvalidInputException();
-        adminService.addPlan(plan);
-        return new ResponseEntity<String>("Plan added successfully with ID: " + plan.getId(), HttpStatus.CREATED);
+		adminService.addPlan(plan);
+		return new ResponseEntity<String>("Plan added successfully with ID: " + plan.getId(), HttpStatus.CREATED);
 	}
 
 }

@@ -10,15 +10,15 @@ import com.freecharge.repos.PlanRepo;
 
 @Service
 public class PlanService {
-	
+
 	@Autowired
 	PlanRepo planRepo;
-	
+
 	public boolean isPresent(Integer id) {
 		return planRepo.existsById(id);
 	}
-	
-	public List<Plan> getAll(){
+
+	public List<Plan> getAll() {
 		return planRepo.findAll();
 	}
 

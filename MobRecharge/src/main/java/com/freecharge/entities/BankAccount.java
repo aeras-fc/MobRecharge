@@ -18,103 +18,100 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 @Entity
-@Table(name="bankaccounts")
+@Table(name = "bankaccounts")
 public class BankAccount {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer bid;
-	
-    @NotNull
-    @Size(max = 30)
+
+	@NotNull
+	@Size(max = 30)
 	private String bankName;
-    
-    @NotNull
+
+	@NotNull
 	private String accountHolderName;
-    
-    @NotNull
+
+	@NotNull
 	private String accountNumber;
-    
-    @NotNull
+
+	@NotNull
 	private Date createdDate;
-    
-    @NotNull
+
+	@NotNull
 	private Date updatedDate;
-    
-    @NotNull
+
+	@NotNull
 	private double balance;
-	
+
 	@ManyToOne
-	@JoinColumn(name="user_uid", nullable = false)
+	@JoinColumn(name = "user_id", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private User user;
-	
-	
+	@JsonIgnore
+	private User user;
+
 	public User getUser() {
 		return user;
 	}
-	
+
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	public Integer getBid() {
 		return bid;
 	}
-	
+
 	public void setBid(Integer bid) {
 		this.bid = bid;
 	}
-	
+
 	public String getBankName() {
 		return bankName;
 	}
-	
+
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
 	}
-	
+
 	public String getAccountHolderName() {
 		return accountHolderName;
 	}
-	
+
 	public void setAccountHolderName(String accountHolderName) {
 		this.accountHolderName = accountHolderName;
 	}
-	
+
 	public String getAccountNumber() {
 		return accountNumber;
 	}
-	
+
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-	
+
 	public Date getCreatedDate() {
 		return createdDate;
 	}
-	
+
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
-	
+
 	public Date getUpdatedDate() {
 		return updatedDate;
 	}
-	
+
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-	
+
 	public double getBalance() {
 		return balance;
 	}
-	
+
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	
-
 
 }

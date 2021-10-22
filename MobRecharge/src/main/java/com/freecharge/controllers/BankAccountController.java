@@ -24,50 +24,48 @@ import com.freecharge.services.UserService;
 public class BankAccountController {
 	@Autowired
 	BankAccountService bankService;
-	
+
 	@Autowired
 	UserService userService;
-	
-	
-	@GetMapping(value="/")
+
+	@GetMapping(value = "/")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-	ResponseEntity <List<BankAccount>> getBankAccount(@PathVariable Integer uid) {
-		if(!userService.isPresent(uid))
+	ResponseEntity<List<BankAccount>> getBankAccount(@PathVariable Integer uid) {
+		if (!userService.isPresent(uid))
 			return new ResponseEntity<List<BankAccount>>((List<BankAccount>) null, HttpStatus.BAD_REQUEST);
 		else {
-			List <BankAccount> listAccount = bankService.getByUid(uid);
-			if(listAccount.isEmpty())
+			List<BankAccount> listAccount = bankService.getByUid(uid);
+			if (listAccount.isEmpty())
 				return new ResponseEntity<List<BankAccount>>(listAccount, HttpStatus.NO_CONTENT);
 			else
 				return new ResponseEntity<List<BankAccount>>(listAccount, HttpStatus.OK);
 		}
 	}
-	
-	@PostMapping(value="/")
+
+	@PostMapping(value = "/")
 	@PreAuthorize("hasRole('USER')")
 	ResponseEntity<String> addBankAccount(@RequestBody BankAccount bankAccount, @PathVariable Integer uid) {
-		if(!userService.isPresent(uid))
+		if (!userService.isPresent(uid))
 			return new ResponseEntity<String>("User not available", HttpStatus.BAD_REQUEST);
-		else if(bankAccount.getBalance() < 0)
+		else if (bankAccount.getBalance() < 0)
 			throw new InvalidInputException();
 		else {
 			bankService.add(bankAccount, uid);
 			return new ResponseEntity<>("Bank Added Successfully with ID: " + bankAccount.getBid(), HttpStatus.CREATED);
 		}
 	}
-	
-	@DeleteMapping(value="/{bid}")
+
+	@DeleteMapping(value = "/{bid}")
 	@PreAuthorize("hasRole('USER')")
 	ResponseEntity<String> deleteBankAccountByBid(@PathVariable Integer uid, @PathVariable Integer bid) {
-		if(!userService.isPresent(uid))
+		if (!userService.isPresent(uid))
 			return new ResponseEntity<String>("User not present!", HttpStatus.BAD_REQUEST);
 		else {
-			if(bankService.isPresent(bid) && bankService.getByBid(bid).getUser().getId().equals(uid)) {
+			if (bankService.isPresent(bid) && bankService.getByBid(bid).getUser().getId().equals(uid)) {
 				bankService.delete(bid);
 				return new ResponseEntity<String>("Bank Account Deleted", HttpStatus.OK);
-			}
-			else 
-			   return new ResponseEntity<String>("Bank Account not available", HttpStatus.BAD_REQUEST);
-		}	
+			} else
+				return new ResponseEntity<String>("Bank Account not available", HttpStatus.BAD_REQUEST);
+		}
 	}
 }

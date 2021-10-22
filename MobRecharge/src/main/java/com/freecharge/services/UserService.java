@@ -12,7 +12,7 @@ import com.freecharge.repos.UserRepository;
 public class UserService {
 	@Autowired
 	UserRepository userRepository;
-	
+
 	public Integer createNewUser(User user) {
 		userRepository.save(user);
 		return user.getId();
@@ -21,21 +21,21 @@ public class UserService {
 	public User getById(Integer uid) {
 		return userRepository.findById(uid).orElse(null);
 	}
-	
+
 	public List<User> getAll() {
 		return userRepository.findAll();
 	}
 
 	public User updateById(User user, Integer uid) {
-		User dbuser = userRepository.findById(uid)
-                .orElse(null);
+		User dbuser = userRepository.findById(uid).orElse(null);
 		dbuser.setCreatedDate(user.getCreatedDate());
 		dbuser.setDob(user.getDob());
 		dbuser.setEmail(user.getEmail());
 		dbuser.setFirstname(user.getFirstname());
 		dbuser.setGender(user.getGender());
 		dbuser.setLastname(user.getLastname());
-		dbuser.setMobileNumber(user.getMobileNumber());;
+		dbuser.setMobileNumber(user.getMobileNumber());
+		;
 		dbuser.setPassword(user.getPassword());
 		dbuser.setUpdatedDate(user.getUpdatedDate());
 		return userRepository.findById(uid).orElse(null);
@@ -45,7 +45,7 @@ public class UserService {
 		userRepository.deleteById(uid);
 		return "deleted";
 	}
-	
+
 	public boolean isPresent(Integer id) {
 		return userRepository.existsById(id);
 	}

@@ -16,30 +16,29 @@ import com.sun.istack.NotNull;
 
 @Entity
 public class Offer {
-	//offers added
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@NotNull
-	@Size (max = 30)
+	@Size(max = 30)
 	private String description;
-	
+
 	@NotNull
 	private double discountPercentage;
-	
+
 	@NotNull
 	private double minValue;
-	
+
 	@NotNull
 	private double ceilingValue;
-	
+
 	@ManyToOne
-	@JoinColumn(name="plan_pid", nullable = false)
+	@JoinColumn(name = "plan_pid", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Plan plan;
-	
+	@JsonIgnore
+	private Plan plan;
+
 	public Plan getPlan() {
 		return plan;
 	}
@@ -87,5 +86,5 @@ public class Offer {
 	public void setCeilingValue(double ceilingValue) {
 		this.ceilingValue = ceilingValue;
 	}
-	
+
 }

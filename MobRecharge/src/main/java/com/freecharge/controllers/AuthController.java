@@ -59,51 +59,32 @@ public class AuthController {
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
-		
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
+
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(new JwtResponse(jwt, 
-												 userDetails.getId(), 
-												 userDetails.getFirstname(),
-		                                         userDetails.getLastname(),
-												 userDetails.getUsername(), 
-												 userDetails.getEmail(),
-												 userDetails.getMobileNumber(),
-												 userDetails.getDob(),
-												 userDetails.getGender(),
-												 userDetails.getCreatedDate(),
-												 userDetails.getUpdatedDate(),
-												 roles));
+		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getFirstname(),
+				userDetails.getLastname(), userDetails.getUsername(), userDetails.getEmail(),
+				userDetails.getMobileNumber(), userDetails.getDob(), userDetails.getGender(),
+				userDetails.getCreatedDate(), userDetails.getUpdatedDate(), roles));
 	}
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Username is already taken!"));
+			return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
 		}
 
 		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Email is already in use!"));
+			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
 		}
 
 		// Create new user's account
-		User user = new User(signUpRequest.getUsername(),
-				             signUpRequest.getFirstname(),
-				             signUpRequest.getLastname(),
-							 signUpRequest.getEmail(),
-							 signUpRequest.getMobileNumber(),
-							 signUpRequest.getDob(),
-							 signUpRequest.getGender(),
-							 signUpRequest.getCreatedDate(),
-							 signUpRequest.getUpdatedDate(),
-							 encoder.encode(signUpRequest.getPassword()));
+		User user = new User(signUpRequest.getUsername(), signUpRequest.getFirstname(), signUpRequest.getLastname(),
+				signUpRequest.getEmail(), signUpRequest.getMobileNumber(), signUpRequest.getDob(),
+				signUpRequest.getGender(), signUpRequest.getCreatedDate(), signUpRequest.getUpdatedDate(),
+				encoder.encode(signUpRequest.getPassword()));
 
 		Set<String> strRoles = signUpRequest.getRole();
 		Set<Role> roles = new HashSet<>();

@@ -20,46 +20,37 @@ import com.freecharge.repos.UserRepository;
 public class PaymentService {
 	@Autowired
 	TransactionRepository transactionRepo;
-	
+
 	@Autowired
 	UserRepository userRepo;
-	
+
 	@Autowired
 	PlanRepo planRepo;
-	
+
 	@Autowired
 	OfferRepo offerRepo;
-	
-	
+
 	public Integer addTransaction(Integer uid, Integer pid, Integer oid) {
-		
+
 		User user = userRepo.findById(uid).orElse(null);
 		Plan plan = planRepo.findById(pid).orElse(null);
 		Offer offer = offerRepo.findById(oid).orElse(null);
-		
+
 		double amount;
-		if(plan.getPrice() >= offer.getMinValue()) {
-			double discountedAmt = (offer.getDiscountPercentage()/100.00)*plan.getPrice();
+		if (plan.getPrice() >= offer.getMinValue()) {
+			double discountedAmt = (offer.getDiscountPercentage() / 100.00) * plan.getPrice();
 			amount = plan.getPrice() - Math.min(discountedAmt, offer.getCeilingValue());
-		}
-		else
+		} else
 			amount = plan.getPrice();
-		
-		Transaction transaction = new Transaction(
-				new Date(),
-				amount,
-				Status.Successful,
-				user,
-				plan,
-				offer
-				);
-				
+
+		Transaction transaction = new Transaction(new Date(), amount, Status.Successful, user, plan, offer);
+
 		transactionRepo.save(transaction);
 		return transaction.getId();
 	}
-	
-	public List<Transaction> getByUid(Integer uid){
-		return transactionRepo.findByUserUid(uid);
+
+	public List<Transaction> getByUid(Integer uid) {
+		return transactionRepo.findByUserId(uid);
 	}
 
 }
