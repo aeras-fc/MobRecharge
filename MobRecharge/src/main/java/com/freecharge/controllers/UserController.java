@@ -87,7 +87,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value="/{uid}/transactions")
-	@PreAuthorize("hasRole('USER")
+	@PreAuthorize("hasRole('USER')")
 	ResponseEntity <List<Transaction>> getAllTransactions(@PathVariable Integer uid) {
 		if(userService.isPresent(uid)) {
 			List <Transaction> listTransaction = paymentService.getByUid(uid);

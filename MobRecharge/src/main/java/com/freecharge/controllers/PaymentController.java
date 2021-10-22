@@ -37,7 +37,7 @@ public class PaymentController {
 			return new ResponseEntity<String>("Invalid Arguments", HttpStatus.BAD_REQUEST);
 		else {
 			paymentService.addTransaction(uid, pid, oid);
-			return new ResponseEntity<String>("Check", HttpStatus.CREATED);
+			return new ResponseEntity<String>("Transaction successful", HttpStatus.CREATED);
 		}
 	}
 

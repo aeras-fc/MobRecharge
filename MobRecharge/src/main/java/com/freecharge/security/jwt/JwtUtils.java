@@ -24,7 +24,7 @@ public class JwtUtils {
 	private String jwtSecret="secret";
 
 	//@Value("${freecharge.app.jwtExpirationMs}")
-	private int jwtExpirationMs=2000;
+	private int jwtExpirationMs=60000;
 
 	public String generateJwtToken(Authentication authentication) {
 

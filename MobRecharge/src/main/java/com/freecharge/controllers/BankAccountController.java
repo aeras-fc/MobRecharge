@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.freecharge.entities.BankAccount;
+import com.freecharge.exceptions.InvalidInputException;
 import com.freecharge.services.BankAccountService;
 import com.freecharge.services.UserService;
 
@@ -43,10 +44,12 @@ public class BankAccountController {
 	}
 	
 	@PostMapping(value="/")
-	@PreAuthorize("hasRole('USER')")
+//	@PreAuthorize("hasRole('USER')")
 	ResponseEntity<String> addBankAccount(@RequestBody BankAccount bankAccount, @PathVariable Integer uid) {
 		if(!userService.isPresent(uid))
 			return new ResponseEntity<String>("User not available", HttpStatus.BAD_REQUEST);
+		else if(bankAccount.getBalance() < 0)
+			throw new InvalidInputException();
 		else {
 			bankService.add(bankAccount, uid);
 			return new ResponseEntity<>("Bank Added Successfully with ID: " + bankAccount.getBid(), HttpStatus.CREATED);

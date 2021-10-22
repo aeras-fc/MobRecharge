@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS).and()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER).and()
 			.authorizeRequests().antMatchers("/api/v1.0/mobrecharge/**").permitAll()
 			.antMatchers("/api/test/**").permitAll()
 			

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.freecharge.entities.Offer;
 import com.freecharge.entities.Plan;
+import com.freecharge.exceptions.InvalidInputException;
 import com.freecharge.services.AdminService;
 import com.freecharge.services.PlanService;
 
@@ -27,7 +28,9 @@ public class AdminController {
 	@PostMapping("/plan/{pid}/offer")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> addOffer(@RequestBody Offer offer, @PathVariable Integer pid) {
-		if(planService.isPresent(pid)) {
+		if(offer.getCeilingValue() < 0 || offer.getDiscountPercentage() < 0|| offer.getDiscountPercentage() < 0)
+			throw new InvalidInputException();
+	    else if(planService.isPresent(pid)) {
 			adminService.addOffer(offer, pid);
 			return new ResponseEntity<String>("Offer Added with ID: " + offer.getId(), HttpStatus.CREATED);
 		}
@@ -38,8 +41,10 @@ public class AdminController {
 	@PostMapping("/plan")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<String> addPlan(@RequestBody Plan plan){
-       adminService.addPlan(plan);
-       return new ResponseEntity<String>("Plan added successfully with ID: " + plan.getId(), HttpStatus.CREATED);
+		if(plan.getPrice() < 0)
+			throw new InvalidInputException();
+        adminService.addPlan(plan);
+        return new ResponseEntity<String>("Plan added successfully with ID: " + plan.getId(), HttpStatus.CREATED);
 	}
 
 }
