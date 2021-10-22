@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.freecharge.entities.Role;
+import com.sun.istack.NotNull;
 
 @Entity
 @Table(name="users",
@@ -26,18 +27,36 @@ import com.freecharge.entities.Role;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer uid;
+	private Integer id;
 	
+	@NotNull
 	private String firstname;
+	
+	@NotNull
 	private String lastname;
+	
+	@NotNull
 	private String username;
+	
+	@NotNull
 	private String password;
+	
+	@NotNull
 	private String email;
+	
+	@NotNull
 	private String mobileNumber;
+	
+	@NotNull
 	private Date dob;
+	
+	@NotNull
 	private Gender gender;
+	
+	@NotNull
 	private Date createdDate;
 	
+	@NotNull
 	private Date updatedDate;
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "user_roles", 
@@ -69,12 +88,12 @@ public class User {
 		this.username=username;
 	}
 	
-	public Integer getUid() {
-		return uid;
+	public Integer getId() {
+		return id;
 	}
 	
-	public void setUid(Integer uid) {
-		this.uid = uid;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	public String getFirstname() {

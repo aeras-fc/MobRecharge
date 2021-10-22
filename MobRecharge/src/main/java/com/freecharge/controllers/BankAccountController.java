@@ -44,7 +44,7 @@ public class BankAccountController {
 	}
 	
 	@PostMapping(value="/")
-//	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER')")
 	ResponseEntity<String> addBankAccount(@RequestBody BankAccount bankAccount, @PathVariable Integer uid) {
 		if(!userService.isPresent(uid))
 			return new ResponseEntity<String>("User not available", HttpStatus.BAD_REQUEST);
@@ -62,7 +62,7 @@ public class BankAccountController {
 		if(!userService.isPresent(uid))
 			return new ResponseEntity<String>("User not present!", HttpStatus.BAD_REQUEST);
 		else {
-			if(bankService.isPresent(bid) && bankService.getByBid(bid).getUser().getUid().equals(uid)) {
+			if(bankService.isPresent(bid) && bankService.getByBid(bid).getUser().getId().equals(uid)) {
 				bankService.delete(bid);
 				return new ResponseEntity<String>("Bank Account Deleted", HttpStatus.OK);
 			}

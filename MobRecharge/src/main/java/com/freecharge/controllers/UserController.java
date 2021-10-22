@@ -99,9 +99,19 @@ public class UserController {
 		else
 			return new ResponseEntity<List<Transaction>>((List<Transaction>) null, HttpStatus.BAD_REQUEST);
 	}
+	
 	@GetMapping(value="/{uid}/transaction/{tid}")
-	void getTransactionById(@PathVariable Integer uid,@PathVariable Integer tid) {
-		System.out.println("get transaction by id called");
+	@PreAuthorize("hasRole('USER') or hasRole('Admin')")
+	ResponseEntity <List<Transaction>> getTransactionById(@PathVariable Integer uid,@PathVariable Integer tid) {
+		if(!userService.isPresent(uid))
+			return new ResponseEntity<List<Transaction>>((List<Transaction>) null, HttpStatus.BAD_REQUEST);
+		else {
+			List <Transaction> listTransaction = paymentService.getByUid(uid);
+			if(listTransaction.isEmpty())
+				return new ResponseEntity<List<Transaction>>(listTransaction, HttpStatus.NO_CONTENT);
+			else
+				return new ResponseEntity<List<Transaction>>(listTransaction, HttpStatus.OK);
+		}
 	}
 	
 }

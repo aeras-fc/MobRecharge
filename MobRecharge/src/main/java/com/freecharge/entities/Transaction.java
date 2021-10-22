@@ -14,38 +14,44 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.istack.NotNull;
 
 @Entity
-@Table(name="transactions")
+@Table(name = "transactions")
 public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
+	@NotNull
 	private Date createdDate;
+
+	@NotNull
 	private double amount;
+
+	@NotNull
 	private Status status;
-	
+
 	@ManyToOne
-	@JoinColumn(name="user_uid", nullable = false)
+	@JoinColumn(name = "user_uid", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private User user;
-	
+	@JsonIgnore
+	private User user;
+
 	@ManyToOne
-	@JoinColumn(name="plan_pid", nullable = false)
+	@JoinColumn(name = "plan_pid", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Plan plan;
-	
+	@JsonIgnore
+	private Plan plan;
+
 	@ManyToOne
-	@JoinColumn(name="offer_oid", nullable = false)
+	@JoinColumn(name = "offer_oid", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Offer offer;
-	
+	@JsonIgnore
+	private Offer offer;
+
 	public Transaction() {
-		
+
 	}
 
 	public Transaction(Date createdDate, double amount, Status status, User user, Plan plan, Offer offer) {
@@ -113,7 +119,5 @@ public class Transaction {
 	public void setOffer(Offer offer) {
 		this.offer = offer;
 	}
-	
-	
 
 }
