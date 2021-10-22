@@ -46,7 +46,6 @@ public class Transaction {
 
 	@ManyToOne
 	@JoinColumn(name = "offer_oid", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnore
 	private Offer offer;
 
