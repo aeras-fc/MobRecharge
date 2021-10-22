@@ -1,6 +1,7 @@
 package com.freecharge.controllers;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +9,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.freecharge.entities.Plan;
 import com.freecharge.entities.Transaction;
 import com.freecharge.entities.User;
+import com.freecharge.services.PaymentService;
 import com.freecharge.services.PlanService;
 import com.freecharge.services.UserService;
 
@@ -28,6 +29,9 @@ public class UserController {
 	
 	@Autowired
 	PlanService planService;
+	
+	@Autowired
+	PaymentService paymentService;
 	
 	
 	@GetMapping("/")
@@ -82,18 +86,22 @@ public class UserController {
 			return new ResponseEntity<>(planList, HttpStatus.FOUND);
 	}
 	
-	
-	//to be put in transaction controller
-	@GetMapping(value="/{uid}/transaction")
-	void getAllTransactions(@PathVariable Integer uid) {
-		System.out.println("get transaction called");
+	@GetMapping(value="/{uid}/transactions")
+	@PreAuthorize("hasRole('USER")
+	ResponseEntity <List<Transaction>> getAllTransactions(@PathVariable Integer uid) {
+		if(userService.isPresent(uid)) {
+			List <Transaction> listTransaction = paymentService.getByUid(uid);
+			if(listTransaction.isEmpty())
+				return new ResponseEntity<List<Transaction>>(listTransaction, HttpStatus.NO_CONTENT);
+			else
+				return new ResponseEntity<List<Transaction>>(listTransaction, HttpStatus.FOUND);
+		}
+		else
+			return new ResponseEntity<List<Transaction>>((List<Transaction>) null, HttpStatus.BAD_REQUEST);
 	}
 	@GetMapping(value="/{uid}/transaction/{tid}")
 	void getTransactionById(@PathVariable Integer uid,@PathVariable Integer tid) {
 		System.out.println("get transaction by id called");
 	}
-	@PostMapping(value="/{uid}/plan/{pid}/offer/{oid}/payment")
-	void addPaymentDetails(@RequestBody Transaction transaction) {
-		System.out.println("add payment details called");
-	}
+	
 }

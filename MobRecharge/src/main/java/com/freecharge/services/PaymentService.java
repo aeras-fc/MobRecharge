@@ -1,6 +1,7 @@
 package com.freecharge.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,10 @@ public class PaymentService {
 				
 		transactionRepo.save(transaction);
 		return transaction.getId();
+	}
+	
+	public List<Transaction> getByUid(Integer uid){
+		return transactionRepo.findByUserUid(uid);
 	}
 
 }
